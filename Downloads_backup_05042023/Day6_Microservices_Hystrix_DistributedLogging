@@ -1,0 +1,107 @@
+---------------------------------------------------------------------------------------------------------
+                                                Circuit Breaker
+---------------------------------------------------------------------------------------------------------
+-> Circuit Breaker is used to protect us from damages.
+-> Circuit Breaker is used to implement Fault Tolerance
+-> In Microservices Architecture, multiple services will be available.
+
+-> If one microservice is not able to process the request, then request processing can't be completed.....
+-> To implement Circuit breaker, we will use Spring Cloud Netflix Hystrix Library
+
+How it is related to Spring Boot ?
+----------------------------------
+-> Using Spring Boot, we are developing Microservices in Java.
+-> When we follow Microservices architecture, we will have several services.
+-> Our Services are nothing but Rest APIs.
+
+
+Steps to work with Circuit Breaker
+------------------------------------
+1) Create Spring Boot Application with below dependencies
+       1)spring-boot-starter-web
+       2)spring-cloud-starter-netflix-hystrix
+2) Configure @EnableCircuitBreaker annotation at Spring Boot Start Class
+3) Create Rest Controller with Required Methods (business operation method and fallback method)
+4) Configure Circuit Breaker for Business Operation method using below annotation
+	@HystrixCommand(fallBackMethod="...")
+5) Configure port number and run our application.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+                                        Distributed Logging using Sleuth & ZipKin
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+MICROSERVICE ARCHITECTURE BASED PROJECT
+
+The above microservice architecture based project contains multiple service request is processing by all Services
+available in project
+Every service will have logging and will generate a log file.
+
+If request is failed to process or if request processing is taking more time than it would be very difficult to 
+understand which service is causing the problem.
+
+-> Logging is the process of storing application execution details in a file to monitor in future.
+
+-> By using log files we can understanad where is the problem and what is the problem in application.
+
+
+Steps to implement Distributed logging using Slueth & Zipkin
+------------------------------------------------------------
+1) Download zipkin server (it is jar file)
+
+  URL to download : https://zipkin.io/pages/quickstart
+
+2) Run the zipkin server jar file from cmd
+
+     Syntax : java -jar <zipkin-jar-file-name.jar>
+
+3) After zipkin server started, access Zipkin dashboard using below url
+
+    URL : http://localhost:9411/zipkin/
+
+Note: With this zipkin server setup is done
+
+4) Create Spring Boot Application with below dependencies
+
+	1)spring-boot-starter-web
+	2)sleuth
+	3)zipkin
+	4)devtools
+
+	<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+
+
+5) Create one Rest controller with required methods
+
+6) Implement logging in rest controller methods
+
+------------------------------------------------------------------
+@RestController
+public class WelcomeRestController {
+
+	Logger logger = LoggerFactory.getLogger(WelcomeRestController.class);
+
+	@GetMapping(value = "/welcome")
+	public String getWelcomeMsg() {
+		logger.info(" **** getWelcomeMsg( ) execution started ****");
+		String msg = "Welcome to javaExpress IT...!!";
+		logger.info(" **** getWelcomeMsg( ) execution ended ****");
+		return msg;
+	}
+}
+-------------------------------------------------------------------
+
+7) Configure Port Number and Run Boot application
+
+8) Send the request to Rest controller method and verify Zipkin dashboard for log details.
+
+

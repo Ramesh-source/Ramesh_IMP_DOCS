@@ -1,0 +1,600 @@
+import * as actionTypes from '../actions/actionTypes';
+import {updateObject, getCommRefDesc} from '../../common/utility/utility';
+import { initIncomeDetail, initEntityData, initfinStatement, initIncCalculator, initBankingDetails, pleaseSelectObj } from './states/statesData';
+
+
+
+
+const initialState = {
+    entityData:initEntityData,
+    selectedEntity: {
+        name: "",
+        type: "",
+        subtype: "",
+        subtypeCode: "",
+        newEntitySel: false,
+        custCategory: "",
+        incomeDetail: initIncomeDetail,
+        bankingDetails: initBankingDetails,
+        finStatement: initfinStatement,
+        finCalculator: initIncCalculator,
+    },
+    commRef:{},
+    proxyIncome:{},
+    loading: false,
+    showSuccessMsg: false        
+};
+
+const fetchFromApiStart = ( state, action ) => {
+    return updateObject(state, {loading:true});
+};
+
+const fetchFromApiSuccess = ( state, action ) => {
+    return updateObject(state, {loading:false});
+}
+
+const fetchFromApiFail = (state, action ) => {
+    return updateObject(state, {loading:false});
+}
+
+const selectEntitityFinInfo= (state, action ) => {
+    //to get the selected info and get the new selected info state 
+    let newSelectedEntities = {...state.selectedEntity};
+    const commRef = {...state.commRef};
+    const newEntities = state.entityData.map((entity) => {
+        if(entity.id === action.entityId){
+            const newEntity = {
+                ...entity,
+                selectedFlag: true
+            }
+            newSelectedEntities = {
+                indPk: entity.indPk,
+                nonIndPk: entity.nonIndPk,
+                name: entity.custName,
+                typeId: entity.indType ? entity.indType : entity.nonIndType,
+                type: getCommRefDesc(state.commRef.custType, entity.indType ? entity.indType : entity.nonIndType),
+                subtype: getCommRefDesc(state.commRef.custSubType, entity.custSubType),
+                subtypeCode: entity.custSubType,
+                applNo: entity.applNo,
+                custCategory: entity.custCategory,
+                newEntitySel: false,
+                incomeDetail: initIncomeDetail, //Reinitialize new IncomeDetail need to fetch again later.
+				bankingDetails: initBankingDetails,
+                finStatement:initfinStatement,
+                finCalculator: initIncCalculator,
+                showSuccessMsg: false,
+                showErrorMsg: false
+            };
+            return newEntity;
+        }else{
+            const newEntity = {
+                ...entity,
+                selectedFlag: false
+            }
+            return newEntity;
+        }
+    });
+
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntities,
+        entityData: newEntities,
+        commRef: commRef
+    }
+
+    //console.log('After selected entity -> ' + JSON.stringify(newState, null, 2))
+    
+    return updateObject(state, newState);
+}
+
+const fetchAppDetailSuccess = (state, action ) => {
+    //console.log('data during success - ' + JSON.stringify(action.data))
+    let appData = {};
+    
+    
+    const dataInd = action.data.indDets;
+    const dataNI = action.data.nonIndDets; 
+
+    const fetchedEntity = [];
+    let keyID = 0;
+    if(action.data.indMainApplicant !== null) {
+        appData = action.data.indMainApplicant;
+        fetchedEntity.push({
+            id: keyID,
+            status: false,
+            select: 'View Details',
+            selectedFlag: false,
+            entTypeDesc: getCommRefDesc(state.commRef.custType, appData.indType),
+            custCategory: action.data.custCategory,
+            ...appData,
+            
+        });
+    }
+    else if(action.data.nonIndMainApplicant !== null){
+         appData = action.data.nonIndMainApplicant;
+         fetchedEntity.push({
+            id: keyID,
+            status: false,
+            select: 'View Details',
+            selectedFlag: false,
+            entTypeDesc: getCommRefDesc(state.commRef.custType, appData.nonIndType),
+            custCategory: action.data.custCategory,
+            ...appData,
+            
+        });
+    }
+
+    keyID++;
+    for (let key in dataInd) {
+        fetchedEntity.push({
+            id: keyID,
+            status: false,
+            select: 'View Details',
+            selectedFlag: false,
+            entTypeDesc: getCommRefDesc(state.commRef.custType, dataInd[key].indType),
+            custCategory: action.data.custCategory,
+            ...dataInd[key],
+        });
+        keyID++;
+    }
+    for (let key in dataNI) {
+        fetchedEntity.push({
+            id: keyID,
+            status: false,
+            select: 'View Details',
+            selectedFlag: false,
+            entTypeDesc: getCommRefDesc(state.commRef.custType, dataNI[key].nonIndType),
+            custCategory: action.data.custCategory,
+            ...dataNI[key],
+        });
+        keyID++;
+    }
+    const newState = {
+        ...state,
+        entityData: fetchedEntity,
+    }
+
+    //console.log("data on fetch " + JSON.stringify(newState))
+    return updateObject(state, newState);
+}
+
+const fetchIncomeDetailSuccess = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        incomeDetail: action.incomeDetail
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+}
+
+const fetchBankDetailSuccess = (state, action ) => {
+    console.log("fetchBankDetailSuccess");
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        ...state.commRef,
+        bankingDetails: action.bankDetail
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+}
+
+const updateProxyIncome = (state, action ) => {
+    
+    const newIncomeData = {
+        ...state.selectedEntity.incomeDetail,
+        proxyIncomeFinAsset:2000
+    }
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        incomeDetail: newIncomeData
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject (state, newState);
+}
+
+const saveIncomeSuccess = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        incomeDetail: action.incomeDetail,
+        showSuccessMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity,
+    }
+    return updateObject(state, newState);
+}
+
+const saveIncomeError = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        showErrorMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity,
+    }
+    return updateObject(state, newState);
+}
+
+const updateBankStatements = (state, action ) => {
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    bankingDetailsList[0] = action.bankDetail;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements1:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const updateBankStatements2 = (state, action ) => {
+    console.log("updateBankStatements2");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    bankingDetailsList[1] = action.bankDetail;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements2:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const updateBankStatements3 = (state, action ) => {
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    bankingDetailsList[2] = action.bankDetail;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements3:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const updateBankStatements4 = (state, action ) => {
+    console.log("updateBankStatements4");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    bankingDetailsList[4] = action.bankDetail;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements4:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const resetBankStatement1 = (state, action ) => {
+    console.log("resetBankStatement1");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    const bankInfoPk = bankingDetailsList[0].bankInfoPk;
+    const applBankInfoDets = bankingDetailsList[0].applBankInfoDets;
+    bankingDetailsList[0] = [];
+    bankingDetailsList[0].bankInfoPk = bankInfoPk;
+    bankingDetailsList[0].applBankInfoDets = applBankInfoDets;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements1:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const resetBankStatement2 = (state, action ) => {
+    console.log("resetBankStatement2");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    const bankInfoPk = bankingDetailsList[1].bankInfoPk;
+    const applBankInfoDets = bankingDetailsList[1].applBankInfoDets;
+    bankingDetailsList[1] = [];
+    bankingDetailsList[1].bankInfoPk = bankInfoPk;
+    bankingDetailsList[1].applBankInfoDets = applBankInfoDets;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements2:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const resetBankStatement3 = (state, action ) => {
+    console.log("resetBankStatement3");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    const applNo = bankingDetailsList[2].applNo;
+    bankingDetailsList[2] = [];
+    bankingDetailsList[2].applNo = applNo;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements3:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const resetBankStatement4 = (state, action ) => {
+    console.log("resetBankStatement4");
+    let bankingDetailsList = [...state.selectedEntity.bankingDetails];
+    const applNo = bankingDetailsList[3].applNo;
+    bankingDetailsList[3] = [];
+    bankingDetailsList[3].applNo = applNo;
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        bankingDetails: bankingDetailsList
+    }
+    console.log("updateBankStatements4:"+newSelectedEntity);
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    console.log("newState:"+newState);
+    return updateObject(state, newState);
+}
+
+const saveIncomeCalcError = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        showErrorMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity,
+    }
+    return updateObject(state, newState);
+}
+
+const saveIncomCalSuccess= (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        finCalculator: action.incomeCalculatorDetail,
+        showSuccessMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+}
+
+const updateSelEntityFlag = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        newEntitySel: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+
+}
+
+const saveFinancialStatementError = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        showErrorMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity,
+    }
+    return updateObject(state, newState);
+}
+
+const saveFinancialStatementSuccess= (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        finStatement: action.financialStatementData,
+        showSuccessMsg: true
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+}
+
+const fetchfinStmtSuccess = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        finStatement: action.data
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    //console.log("this is the new state after taking fin statment" + JSON.stringify(newState));
+    return updateObject(state, newState);
+}
+
+const fetchfinCalSuccess = (state, action ) => {
+    let newFincalculator = {...initIncCalculator};
+    if(action.data !== null) newFincalculator = action.data;
+    //console.log('data during fetch ' + JSON.stringify(newFincalculator, null, 2))
+
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        finCalculator: newFincalculator
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    //console.log("this is the new state after taking fin statment" + JSON.stringify(newState.selectedEntity.finCalculator, null, 2));
+    return updateObject(state, newState);
+}
+
+const fetchCommRef = (state, action ) => {
+
+    let newComRef= {...state.commRef};
+
+    if(action.refType === 'CUST_SUBTYPE'){
+        newComRef = {
+            ...state.commRef,
+            custSubType: action.data.data
+        };
+    }else if(action.refType === 'CUST_TYPE'){
+        newComRef = {
+            ...state.commRef,
+            custType: action.data.data
+        };
+    }else if(action.refType === 'ACCT_TYPE'){
+        action.data.data.splice( 0, 0, pleaseSelectObj);
+        newComRef = {
+            ...state.commRef,
+            acctType: action.data.data
+        };
+    }else if(action.refType === 'OD_STATUS'){
+        action.data.data.splice( 0, 0, pleaseSelectObj);
+        newComRef = {
+            ...state.commRef,
+            odStatus: action.data.data
+        };
+    }
+    else if(action.refType === 'FIN_INSTITUTE'){
+        action.data.data.splice( 0, 0, pleaseSelectObj);
+        newComRef = {
+            ...state.commRef,
+            finInstitute: action.data.data
+        };
+    }
+
+
+    const newState = {
+        ...state,
+        commRef: newComRef
+    }
+    return updateObject(state, newState);
+}
+
+
+
+const fetchProxyIncomes = (state, action ) => {
+    let newPrxInc = {};
+    if(action.prxIncType === 'EMP'){
+        newPrxInc = {
+            ...state.proxyIncome,
+            empProxyInc: action.data
+        };
+    }else if(action.prxIncType === 'NON_EMP'){
+        newPrxInc = {
+            ...state.proxyIncome,
+            nonEmpProxyInc: action.data
+        };
+    }
+    const newState = {
+        ...state,
+        proxyIncome: newPrxInc
+    }
+    return updateObject(state, newState);
+}
+
+const closeSuccessModal = (state, action ) => {
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        showSuccessMsg: false,
+        showErrorMsg: false
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+
+    return updateObject(state, newState);
+}
+
+const changeCalculatorType = (state, action ) => {
+    
+    const newFincalculator = {
+        ...state.selectedEntity.finCalculator,
+        incCalcOptionSelected: action.selection
+    }
+
+    const newSelectedEntity = {
+        ...state.selectedEntity,
+        finCalculator: newFincalculator
+    }
+    const newState = {
+        ...state,
+        selectedEntity: newSelectedEntity
+    }
+    return updateObject(state, newState);
+}
+
+
+const reducer = (state = initialState, action) => {
+    switch (action.type){
+        case actionTypes.SELECT_ENTITY_FININFO: return selectEntitityFinInfo( state, action);
+        case actionTypes.FETCH_APP_DETAIL_SUCCESS: return fetchAppDetailSuccess( state, action);
+        case actionTypes.FETCH_PAY_SLIP: return fetchPaySlip( state, action);
+        case actionTypes.UPDATE_PROXY_INCOME: return updateProxyIncome( state, action);
+        case actionTypes.FETCH_INCOME_SUCCESS: return fetchIncomeDetailSuccess( state, action);
+        case actionTypes.SAVE_INCOME_SUCCESS: return saveIncomeSuccess (state, action);
+        case actionTypes.UPD_FLAG: return updateSelEntityFlag( state, action);
+        case actionTypes.FIN_STATEMENT_SUCCESS: return fetchfinStmtSuccess( state, action);
+        case actionTypes.SAVE_FIN_STATEMENT_ERROR: return saveFinancialStatementError (state, action);
+        case actionTypes.SAVE_FIN_STATEMENT_SUCCESS: return saveFinancialStatementSuccess (state, action);
+        case actionTypes.FIN_CALCULATOR_SUCCESS: return fetchfinCalSuccess( state, action);
+        case actionTypes.FETCH_COMMON_REF_SUCCESS: return fetchCommRef( state, action);
+        case actionTypes.SAVE_INCOME_CALCULATOR_SUCCESS: return saveIncomCalSuccess( state, action);
+        case actionTypes.CLOSE_SUCCESS_MODAL: return closeSuccessModal( state, action);
+        case actionTypes.SAVE_INCOME_ERROR: return saveIncomeError( state, action);
+        case actionTypes.SAVE_INCOME_CALCULATOR_ERROR: return saveIncomeCalcError( state, action);
+        case actionTypes.FETCH_PRXY_INCM_SUCCESS: return fetchProxyIncomes( state, action);
+        case actionTypes.UPDATE_BANK_STATEMENTS: return updateBankStatements( state, action);
+        case actionTypes.UPDATE_BANK_STATEMENTS2: return updateBankStatements2( state, action);
+        case actionTypes.UPDATE_BANK_STATEMENTS3: return updateBankStatements3( state, action);
+        case actionTypes.UPDATE_BANK_STATEMENTS4: return updateBankStatements4( state, action);
+        case actionTypes.FETCH_BANK_SUCCESS: return fetchBankDetailSuccess( state, action);
+        case actionTypes.CHANGE_CALCULATOR_TYPE: return changeCalculatorType( state, action);
+	    case actionTypes.RESET_BANK_STATEMENTS1: return resetBankStatement1( state, action);
+        case actionTypes.RESET_BANK_STATEMENTS2: return resetBankStatement2( state, action);
+        case actionTypes.RESET_BANK_STATEMENTS3: return resetBankStatement3( state, action);
+        case actionTypes.RESET_BANK_STATEMENTS4: return resetBankStatement4( state, action);
+        
+        default: return state;
+    }
+};
+
+export default reducer;

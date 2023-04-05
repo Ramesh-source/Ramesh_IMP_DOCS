@@ -1,0 +1,124 @@
+Rest Architecture
+----------------
+
+1) REstful services are used to develop distributed applications with intereoperability.
+2) Roy Fielding provided Rest Architecture principles to develop REstful services
+
+Note : REstful services doesn't have any specification.
+
+In Restful services 2 actors will be involved.
+
+    1) Resource
+    2) Client
+
+Resource will provide business services to other applications.
+Client will access business services from other applications.
+
+Resource development team will provide documentation to Client side team to undetstand resouce details.
+
+    1) WADL  (outdated)
+    2) Swagger (Trending)
+
+-> By Using Spring with Rest Concepts we can develop Restful services.
+
+Note : Spring web MVC jars are sufficeient to develop Restful services ( additional jars not required)
+
+Rest Architecture principles
+----------------------------
+
+1) Unique Addressbility
+2) Uniform Constraint Interface
+3) Message Oriented Representation
+4) Communication Stateless
+5) HATOES
+
+1) Unique Addressbility
+------------------------
+It represents every resource should have unique address to identify.
+
+    http://localhost:8080/createEmployee
+    http://localhost:8080/deleteEmployee
+
+2) Uniform Constraint Interface
+---------------------------------
+    Uniform - Same
+    Constraint - limitation (GET,POST,PUT,DELETE)
+
+    The main aim of this principle easy Adoptability.
+    If you accesss anything in internet, internally http protocol is running.
+    All Methods bind them to HTTP methods, so htat everybody can access that rest resource.
+
+3) Message Oriented Representation
+    The main aim of this principle is intereoperability.
+    They will talk about media Type to exchange data for multiple formats like XML,JSON,Text ...
+
+4) Communication Stateless principle talks about client information should not stored at server.
+    every request should be treated as first Request only.
+
+5) HATOES
+    Hypermedia as an engine for application state.
+    Server should send response to clients using hyperlinks.
+
+URL : www.javaexpress.com/courses
+
+{
+    "Name" : "Spring Boot Microservices",
+    "Duration " : "40 days",
+    "Trainer " :"bhaskar",
+    "Fee" : "5000",
+    "syllabus" : {
+        "www.javaexpress.com/springboot/coursecontent"
+    }
+
+}
+
+Important Annotations:
+----------------------
+@RestController  : To Represent Java class as Rest Resource (distributed Component)
+
+@RequestMapping : To bind class / method to URL pattern
+
+@GetMapping : To bind rest resource class method to HTTP GET Request.
+
+@PostMapping : To bind rest resource class method to HTTP POST Request.
+
+@PutMapping : To bind rest resource class method to HTTP PUT Request.
+
+@DeleteMapping : To bind rest resource class method to HTTP DELETE Request.
+
+@RequestParam : To read Query Parameters from URL
+
+        ex : www.youtube.com/c/javaexpress/courses?name=java
+
+@PathVariable : To read Path parameters from URL.
+
+        ex : www.youtube.com/c/javaexpress/courses/java
+
+@RequestBody : To read data from Http Request Body.
+
+@ResponseBody : To write data to Http Response Body.
+
+-------------------------------------------------------
+
+@Component
+@Service
+@Repository
+
+@AutoWired
+@Qualifier
+
+@Entity
+
+@ComponentScan
+@Configuration
+@SpringBootApplication
+
+@Controller 
+@ResponseBody
+
+Note : Writing class level url pattern is optional.
+If we have  more than one rest Controller in project,it is highly recommnded to specify class level url pattern.
+
+Writing Method leve url pattern is optional if we have only one method which is binded to particular http Request method.
+If we have more than one method binded to particular Http Request then we should use unique url Pattern for all methods.
+

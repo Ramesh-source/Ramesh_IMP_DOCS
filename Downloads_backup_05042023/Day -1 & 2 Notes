@@ -1,0 +1,378 @@
+
+Monolith Architecture
+=====================
+-> In our application, we will have several modules and several components also will be available
+-> In a project, we have several functionalities.
+-> All the functionalities of the project will be divided into several modules 
+
+Ex : E-Commerce Application
+	1) User management
+	2) Dashboard
+	3) Cart 
+	4) Order 
+	5) Payment
+	6) Reports 
+	7) Cancellation
+
+If we develop all these modules in single application then it is called as Monolith Architecture.
+
+-> When we package our application we will get war file. Monlith Architecture Based application war is called as Fat war.
+
+To overcome drawbacks of Monolith Architecture people are following Microservices Architecture to develop the projects
+
+Points :
+--------
+1) If multiple people using , multiple request will come to server or too many request to server .
+	Will burder will increase in the server or will not increase in the server ?
+	Server may not be handle the request 
+2) We got new requirement to generate in pdf format, like how many orders came here ,how many customers cancelled the product
+How many people are placing the orders
+How much revenue today came ?
+Already application is running in production.
+
+3) Suddenly got new requirement to generate pdf format also , do i need to implement code in project or not ?
+Code changes related to one module or all others modules ?
+If we change in one module, you need to redeploy whole application.
+
+Drawbacks of Monolith Architecture
+----------------------------------
+-> As we are deploying fat war file into server, all modules related requests comes to same server.
+-> Burden will increase on the server
+-> Server may take more time to process the request
+-> Due to heavy traffic server may crash
+-> If We want to deploy latest code related to one module then we have  to bring down the entire application.
+
+-> Maintence : If application is too large and complex to understand, making changes for enhancements 
+and CR is very difficult (Lot of Impact Analysis is required)
+-> Adopting to new technology is very difficult
+-> The size of the application can increase application startup time
+-> Realiability : If there is bug in one module, then it leads to entire application will go down.
+-> We must re-deploy entire application when we make some changes to code
+-> Quick releases are not possible
+-> New team members can't understand the project easily
+
+Components
+-----------
+-> Authorization components : Responsible to authorizing user
+-> Presentation components : Responsible for handling HTTP requests and responding with either HTML or JSON/XML (for web services APIs).
+
+-> Web Components : Responsible to handle user requests
+-> Business components : Responsible to execute business logic
+-> Persistence components : Responsible for DB operations
+-> Integration components : Responsbile webservices/rest api communications
+
+-> Notification Components : Responsible for sending email/mobile msg notifications whenver required
+-> If we develop all these components as a single project then it is called as Monolith Architecture Based Project.
+
+Benefits Of Monolith Architecture
+---------------------------------
+-> Simple for development: At initial stage it is very easy
+-> Easy for testing : End to end testing we can perform
+-> Easy for deployment : One war file only we have to deploy
+-> Easy for scaling : Mulitple server we can spin easily
+
+
+ Load Balancer & LB Algos
+--------------------------
+-> When all components are in same application, all requests comes to same server then burden will
+ increase on server.
+-> When burden increased on server, it will process requests slowly sometimes server might get crash also.
+-> To reduce burden on the server, people will use Load Balacners for applications.
+-> Our application will be deployed to mutlitple servers and all those servers will be connected Load balancer.
+
+How Load Balancer will distribute the load?
+--------------------------------------------
+LBR will use alogorithm to distribute incoming to requests to servers.
+1) Round Robbin
+2) Sticky Session
+3) IP Hashing etc....
+
+LoadBalancerImage.png
+
+
+Microservices Introduction
+---------------------------
+-> Microservice is not a technology
+-> Microservice is not a framwork
+-> Microservie is not an API
+-> Microservice is an Architectural Design Pattern
+-> Microservices design pattern came into market to avoid the problems of Monlithic Architecture
+-> Microservices design pattern not only related to java. It is an universal design pattern any body can 
+follow this design pattern.
+-> This design patterns talks about how to design our project architecture and how to develop our project
+-> The main aim of Microservices architecture is 'Divide & Conconqure'
+-> The main intension of microservices architecture is to provide easy maintence for application.
+-> To achieve easy maintenence of the project, microservices architecture is telling don't develop 
+all the functionalities as single application.
+
+Light weight war file because we have only one module in microservices.
+
+30 people are using Report will go to same server or different server 
+100 request will go to same server or different server ?
+Burder is reduced on server or not ?
+Don't develop in one applicatoin, develop in multiple projects.
+
+Advantages of Microservies
+--------------------------
+1) Easy Maintenence : As we are dividing our project functionality into multiple microservices it is easy to maintain
+2) Faster Releases : As we are developing limited functionality very quickly we can complete development and 
+    testing then immediatley we can release our microservices.
+3) Parallel Development : Multiple teams can work on multiple services development parallelly.
+4) Adopting new technology : There is no rule saying that all microservices should be implemented
+     using same programming language. We can use different technologies to develop our Microservices.
+5) Easy Scaling : We can scale our microservices based projects easily.
+
+Challenges with Microservices
+-----------------------------
+1) Bounded Context : 
+    -> It is very difficult to decide boundary for one microsevice. 
+	Deciding which functionality should be developed in one microservice is difficult.
+    -> Deciding functionality for one microservice is difficult
+
+2) Lot of configuration : As we are developing one project as multiple services, 
+    in every service we have to configuration 
+	In Microservices Architecture we have do configuration in every rest api
+
+		1) pom dependencies
+		2) actuators
+		3) swagger
+		4) security
+		5) Kafka
+		6) Redis
+		7) DataSource etc.....
+
+3) Less visibility
+    All the team members may not get the chance to work with all microservice 
+	hence they will not have complete clarity on project.
+
+4) Pack of cards problem
+    If any main microservice is failed then the dependent microservices also 
+	going to be failed.
+
+
+
+Microservices Architecture
+--------------------------
+Note: There is no fixed architecture for this. People are using microservices architecture 
+    according to their comfort.
+
+-> Here we will talk about generalized microservices architecture that most of the people will follow in projet   
+      development.
+
+-> Microservice is an architectural design pattern which is used to avoid the problems of Monolith Architecture
+
+-----------------------------------------------------------------------------------------------------------------------
+                                    Microservices Architecture Components
+----------------------------------------------------------------------------------------------------------------------------------------------------
+1) Service Registry (Eureka Server)
+2) Microservices (Rest API s)
+3) API Gateway (Zuul Proxy)
+
+What is Service Registry?
+-------------------------
+-> Service Registry is used to register services available in our project
+-> Service Registry will provide a dashboard with services information  like Status, Health and URL etc...
+-> One service nothing but one Rest API
+-> We can use Eureka Server as a Servie Registry
+
+Services
+--------
+-> Rest APIs are called as Services in Microservice Based Project
+-> Rest APIs contains business logic to perform Business operations
+-> As part of business operation one rest api can communicate with another rest api.
+-> Microservice Based Project Means it is collection of Rest APIs
+
+API Gateway
+-----------
+-> An API gateway is an API management tool that sits between a client and collection of backend services.
+-> Backend services are nothing but Rest apis.
+-> API gateways acts as Single Entrypoint for all clients
+-> In API gateway we can write the logic to filter user requests
+
+Microservices_Architecture.png
+
+-----------------------------------------------------------------------------------------------------------------------
+                                                    Service Registry
+-----------------------------------------------------------------------------------------------------------------------
+-> Service registry is used to register all services available in our project (REST APIs)
+-> Service registry will provide a dashboard with details of services which are registered (name, status & URL)
+	1) Service Name
+	2) Service Status
+	3) Service EndpointURL
+-> Eureka Server we are using as a Service Registry
+-> If Eureka is running on 8761 then then Discovery Clients can auto register with Eureka Server
+
+EurekaServer-HiService
+
+--------------------------------------------------
+Procedure to create service registry ( Hoxton.SR10)
+--------------------------------------------------
+-> Create Spring Boot application with below dependencies
+	1)spring-boot-starter-web
+	2)spring-cloud-starter-netflix-eureka-server
+
+-> At spring boot start class specify @EnableEurekaServer annotation
+-> Configure Embedded Container port number as 8761.
+Note: 8761 is default port number for Eureka. 
+---------------application.properties------------------
+server:
+  port: 8761
+
+#telling the server not to register himself in the service registry
+server:
+  port: 8761
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+         defaultZone: http://localhost:8761/eureka
+
+------------------------------------------------------
+If port is 8761 clients can auto detect eureka server and will get registered.
+ If port number is not 8761 then we have to register clients manually.
+-> Run our Spring Boot Application and Access Eureka Dashboard using below URL
+	http://localhost:8761/
+
+--------------------------------------------
+Procedure to create Service as Eureka Client
+--------------------------------------------
+1) Create Spring Boot Project with below dependencies
+	1) spring-starter-web
+	2) spring-cloud-netflix-eureka-client
+
+2) Configure @EnableDiscoveryClient annotation at Spring Boot start class
+
+3) Create Rest Controller with Required methods
+
+4) Change Embedded Container Port No if Required and Run application
+
+5) Verify Eureka Dashboard ( Client should be registered )
+
+Note: Before running client application, make sure Eureka Server Project is Running.
+
+---------------------Eureka Client yml file------------------------
+server:
+  port: 2222
+spring:
+  application:
+    name: HELLO-SERVICE
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka/
+--------------------------------------------------------------------
+Note: 
+if we change port number in Eureka server as 9761 is Service Registry Project Port Number then modify properties
+
+Eureka Server - application.yml file
+server:
+  port: 9761
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+         defaultZone: http://localhost:9761/eureka
+
+-----------------------------------------------------------------------------------------------------------------------
+                                    Feign Client - InterService Communication
+-----------------------------------------------------------------------------------------------------------------------
+-> We have created below 3 applications
+
+	1) Service-Registry (Port Number : 8761) - Eureka Server
+	2) HI-SERVICE (Port Number : 1111) - Eureka Client-1
+	3) HELLO-SERVICE (Port NumBer : 2222) - Eureka Client-2
+
+Inter-Service Communication
+---------------------------
+In our project, if one micro-services accessing another microserice then it is called as Inter-service communication.
+	1) Rest Client
+	2) Web Client 
+	3) Feign Client 
+	
+If one microservices is communicating with another microservice belongs  to same project is called as Inter Service Communication.
+
+-> We can use Rest Client logic to access one REst API
+-> For Inter Service Communication we can use FeignClient
+-> When we use FeignClient, we can specify name of the service instead of URL for communication
+
+
+Steps to Configure FeignClient ( Hi-Serivce Project)
+----------------------------------------------------
+1) Add spring-cloud-starter-openfeign in pom.xml
+	<dependency>
+    		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-openfeign</artifactId>
+  </dependency>
+2) Enable Feign Clients using @EnableFiegnClients annotation at boot start class ( Hi-Service Package)
+3) Create a interface for FeginClient and use @FeignClient annotation
+----------------------------------------------------------------
+package com.javaexpress.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name = "HELLO-SERVICE")
+public interface HelloClient {
+
+	@GetMapping(value = "/hello/{name}")
+	public String invokeHelloService(@PathVariable("name") String name);
+
+}
+
+Eureka Server
+-------------
+http://localhost:8761 (Eureka DashBoard)
+
+http://macc02zq0k8md6n:1111/hi  (hi-serivce) - 1111
+    hi
+  
+http://macc02zq0k8md6n:2222/hello/bhaskar  (hello-service) - 2222
+    Hello,Bhaskar
+
+http://macc02zq0k8md6n:1111/hi/bhaskar -  FeignClient (Hi-Service)
+
+    hi -- Hello,Bhaskar
+
+API Gateway
+http://macc02zq0k8md6n:3333/ms/api1/hi/bhaskar 
+
+http://macc02zq0k8md6n:3333/ms/api2/hello/javaexpress
+
+Stock Application using Microservice Archtotectire
+--------------------------------------------------
+
+Service-Registry : http://localhost:8761
+
+STOCK-PRICE-SERVICE : http://localhost:1111/price/stockprice/{name}
+                        http://localhost:1111/price/stockprice/HCL 
+                            400
+                        http://localhost:1111/price/stockprice/TCS 
+                            2300
+                        http://localhost:1111/price/stockprice/nifty 
+                            15500
+
+        a) web 
+        b) data-jpa
+        c) dev-tools 
+        d) h2 
+        e) swagger 
+     Note : Exception handling -   CompanyNotFoundExceptoin 
+
+STOCK-CALC-SERVICE : http://localhost:2222/stockcal/calculate/{cname}/{qty}
+
+            Ex :  http://localhost:2222/stockcal/calculate/HCL/5
+                    2000
+
+
+
+
+
+
+
+
+

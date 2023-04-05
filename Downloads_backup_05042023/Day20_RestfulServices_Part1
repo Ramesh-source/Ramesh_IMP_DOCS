@@ -1,0 +1,163 @@
+There are several technolgoies are available in market to develop Distributed applications
+
+	1) CORBA (IDL)---> Language specific
+	2) RMI - Alternative for CORBA, but they are not providing logging,security and other concepts.
+	3) EJB (Enterprise Java Beans)
+		- Container
+		- Container Managed Objects
+
+-> EJB is language dependent (one java application can communicate with another java application)
+-> In the market People are looking for intereoperability
+-> Spring framwork,web servers all are copied from EJB,It is a powerful technology
+
+
+Webservices Introduction
+-------------------------
+Webservices is a technology which is used to develop distributed applications with 
+intereoperability.
+Irrespective of platform irrespective of programming language if two applications are communicating 
+with each other then they are called as Intereoperable applications.
+
+    java --------> .Net
+	.Net ----------> Python
+	Python ---------> Salesforce
+	salesforce --------> Android
+	Android ----------> Java
+
+To achieve interoperability every company started doing analysis and they provided their own rules & guidelines.
+Several Industry experts from several companies formed as a Group and they named it as WS-I group.
+
+WS-I (Webservices interoperability)
+-----------------------------------
+WS-I organization provided B.P 1.0 specification to achieve Intereoperability.
+Sun Microsystem --> They gave few ideas
+Microsoft ---> The gave few ideas
+IBM ---> They gave few ideas
+
+B.P 1.0 --> Basic Profile 1.0
+-----------------------------
+This is first and foremost specification released into market to achieve Interoperability
+By Supporting B.P 1.0 specification Sun MicroSystem released one api called JAX-RPC.
+JAX-RPC (Java api for xml - remote procedural call)
+
+As B.P 1.0 is successful, WS-I released B.P 1.1 Specification
+-------------------------------------------------------------
+By Supporting B.P 1.1 specification Sun Microsystem released JAX-WS Api.
+JAX-WS (JAVA API FOR XML - WEBSERVICES)
+
+We can develop webservices in java in 2 ways
+--------------------------------------------
+	1) JAX-RPC API (outdated)
+	2) JAX-WS API (Annoatation support is available)
+
+these two webservices are part of JDK only.
+these are only API's,we need implementations.
+ like JDBC is an API only,MYSQL,Oracle are implementation classes.
+API is not sufficient for development, we need implementation
+
+1) JAX-RPC (B.P 1.0)  -- Outdated
+-------------------------------------
+	Sun Implementation (SI)
+	Apache Axis Implementation
+	Oracle Web-logic
+	IBM WebSphere etc...
+
+
+2) JAX-WS (B.P 1.1)
+--------------------
+	a)Reference Implementation (RI)
+	b)Apache Axis2
+	c)Apache CXF (Spring based implementation)
+	d)Oracle weblogic
+	e)IBM Websphere etc...
+	f)JBoss
+
+If we develop web-service using any one of the above apis that webservices called as SOAP Based Web-service.
+
+Note: By using only API (jax-rpc & jax-ws) we can't develop web-service. Along with API we need implementation to develop a web-service.
+
+
+Roy Fielding
+------------
+
+Roy fielding started using SOAP Webservices in his project and he identified some loop holes in SOAP Webservices.
+
+		1) Adoptability issue (If you know soap then only you can access soap based web services only)
+		2) Intereoperability issue
+
+-> Roy fielding started comparing SOAP Webservices with Internet Services.
+
+-> Roy fielding started analyzing what are rules & principles followed by internet which
+ made it very easy to adopt by everybody.
+
+-> Roy Fielding Identified 5 Principles which made internet super success in the market.
+
+-> He documented those 5 principles and released into market Saying 
+these principles are called as REST Architecture Principles 
+That's where notation started for RESTful Services...........
+
+-> Roy Fielding announced that If you develop your application with REST ARchitecture Principles 
+then your application will be 100% adoptable and 100% intereoperable.
+
+-> Roy Fielding told that REST Architecture Principles are alternate for SOAP Webservices.
+
+-> Google followed those principles and implemented google products and that became super hit in the market.
+
+-> Sun Microsystem also adopted Rest Architecture Principles and
+ Released one api called JAX-RS Api.
+
+-> JAX-RS stands for JAVA API FOR XML - RESTFUL SERVICES.
+
+-> For JAX-RS api we have below 2 implementations
+
+		1) Jersey (Sun Microsystem)
+
+		2) REST Easy (JBoss)
+
+Webservices Architecture
+------------------------
+In the world of Webservices we will have 2 parties
+		1) Provider 
+		2) Consumer
+In the world of Webservices we will have 2 parties
+
+1) Provider 
+
+2) Consumer
+
+Who is Provider?
+----------------
+The application which is providing business services to other applications is called as a Provider application.
+
+
+Who is Consumer?
+----------------
+The application which is accessing business services from other applications is called as Consumer application.
+-> In the world of webservies always Development will begin from    Provider side
+
+-> Provider Development can be done in 2 ways
+		a) Contract First Approach
+		b) Contract Last Approach
+
+What is Contract ?
+------------------
+-> Contract means WSDL
+-> WSDL -> Webservices Description Language
+-> WSDL is a special XML which describes how provider is providing business services to consumers
+-> Contact First Approach means WSDL file will be created first then Development will be started.
+-> Contact Last Approach means First we will develop the service then we will prepare WSDL for that.
+-> Once Provider development is completed, provider will share WSDL file to consumer
+
+Note: Email, sharepoint, repository, UDDI
+Note: Practically UDDI is not required.
+
+-> Once we got the WSDL file, we can start Consumer Development
+-> Consumer can be developed in below ways
+		1) Stub Based Consumer
+		2) Dynamic Proxy Consumer
+
+-> Once Consumer development is completed, consumer will send request to provider
+-> Provider will process consumer request and will send response to consumer.
+
+SOAP - Simple Object Access Protocol
+UDDI -> universal Discovery Description Integration 

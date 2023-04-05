@@ -1,0 +1,113 @@
+Apache Kafka
+
+Apache Kafka was originally developed by LinkedIn.
+Apache Kafka is a distributed streaming platform.
+Apache kafka is used to process real time data feeds with high throughput and low latency.
+Kafka is designed to be run in a “distributed” environment, which means that rather than sitting on one user’s computer, it runs across several (or many) servers, leveraging the additional processing power and storage capacity that this brings.
+Messages represent information such as lines in a log file, a row of stock market area or an error message from a system.
+Messages are grouped into categories called topics. Example : LogMessage and StockMessage.
+Apache Kafka will act as Message Broker
+When we are working with Apache Kafka, two parties will be available. one application will acts as Publisher another application will act as Subscriber.
+If one application publish a message, multiple applications can subscribe to that message.
+
+Topic , Partitions & Offset
+---------------------------
+Topics: A Particular stream of data
+Similar to a table in a database ( without all the constraints )
+You can have as many topics as you want
+A topic is identified by its name.
+Topics are split in partitions, which are the unit of parallelism in Kafka.
+    Each Partition is ordered. 
+    Each Partition within a partition gets an increment id called offset.
+    Each partition should fit in a single Kafka server.
+Offset only have a meaning for a specific partition.
+Eg: offset 3 in partition 0 doesn’t represent the same data as offset 3 in partition 1
+Order is guaranteed only within a partition ( not across partitions)
+Data is kept only for a limited time ( default is one week)
+Once the data is written to a partition, it can’t be changed(immutability)
+
+Brokers
+--------
+Broker is nothing but a server inside cluster
+A Kafka cluster is composed of multiple brokers ( servers )
+Each broker is identified with its ID (integer)
+Each broker contain certain topics and Partitions
+After connecting to any broker (called a bootstrap broker), you will be  connected to entire cluster.
+A good number to get started is 3 brokers, but some big clusters have over 10 brokers
+
+Replication in kafka
+---------------------
+One Machine is called a leader(one replica) and is chosen as the primary and the remaining machines(replicas) are chosen as the followers and act as backups.
+The leader propagates the writes to the followers.
+The leader waits until the writes are completed on all the replicas.
+If a replica is down, it is skipped for the write until it comes back.
+If the leader fails, one of the followers will be chosen as the new leader.
+
+Producers
+----------
+The producer is the creator of the message in kafka.
+The producers place the message to a particular topic.
+The producers also decide which partition to place  the message into.
+Topics should already exists before a message is placed by the producer.
+Messages are added at one end of the partition.
+
+Consumers
+----------
+Consumers read data from topic (identified by name)
+Consumers know which broker to read from
+In case of broker failures, consumers know how to recover
+Data is read in order within each partition
+
+Consumer group
+--------------
+The consumer is the receive of the messages in kafka.
+Each consumer belongs to a consumer group.
+A consumer group may have one or more consumers.
+The consumers specify what topics they want to listen to.
+A message is sent to all the consumers in a consumer group.
+The consumer groups are used to control the messaging system.
+
+zookeeper
+----------
+Zookeeper manages brokers (keeps a list of them)
+Zookeeper helps in performing leader election for partitions
+It sends notifications to Kafka in case of changes( new topic, broker dies, broker comes up, delete topics )
+Kafka can’t work without zookeeper
+Zookeeper  has a leader(handle writes) the rest of the servers are followers(handle reads)
+Zookeeper is used for the leader selection.
+
+Zookeeper and kafka commands
+-----------------------------
+Download kafka in https://kafka.apache.org/downloads
+Zookeeper Server Start
+bin/zookeeper-server-start.sh config/zookeeper.properties
+Kafka Server start
+bin/kafka-server-start.sh config/server.properties
+
+Kafka commands & topic creation
+------------------------------
+./kafka-topics.sh --create --partitions 1 --replication-factor 1 --topic Kafka_Example1 --bootstrap-server localhost:9092
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
+./kafka-topics.sh --bootstrap-server localhost:9092 --topic Kafka_Example --describe
+./kafka-topics.sh --bootstrap-server localhost:9092 --topic Kafka_Example --delete
+
+How to produce a message in console
+
+./bin/kafka-console-producer.sh --topic Kafka_Example --bootstrap-server localhost:9092
+First Message
+Second Message
+
+How to Consume a message in console
+
+.bin/kafka-console-consumer.sh --topic Kafka_Example --bootstrap-server localhost:9092 —from-beginning
+All producers messages will display here
+
+Zookeper server
+zookeeper-server-start.bat zookeeper.properties
+
+Kafka server 
+kafka-server-start.bat server.properties
+
+
+
+

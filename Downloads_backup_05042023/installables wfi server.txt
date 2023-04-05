@@ -1,0 +1,335 @@
+-Dkie.server.jms.queues.response=jms/queue/KIE.SERVER.RESPONSE -Dorg.kie.server.domain=OracleDefaultLoginConfiguration -Dorg.kie.executor.jms.cf=jms/cf/KIE.SERVER.EXECUTOR -Dorg.kie.executor.jms.queue=jms/queue/KIE.SERVER.EXECUTOR -Dorg.kie.server.persistence.ds=jdbc/jbpm -Dorg.kie.server.persistence.tm=org.hibernate.service.jta.platform.internal.WeblogicJtaPlatform -Dorg.kie.server.persistence.dialect=org.hibernate.dialect.Oracle10gDialect -Dorg.kie.server.mode=production -Dorg.kie.server.user=server-user -Dorg.kie.server.pwd=P@ssw0rd -Dorg.kie.server.controller.user=controller -Dorg.kie.server.controller.pwd=P@ssw0rd -Dorg.kie.server.id=MBBLABS-Redhat-processingserver -Dorg.kie.server.location=http://172.31.182.106:7016/kie-server/services/rest/server/ -Dorg.kie.server.controller=http://172.31.182.106:7016/controller/rest/controller/ -Dorg.kie.server.bypass.auth.user=true -Dorg.kie.server.repo=/data/WF_TEST -Dorg.kie.server.startup.strategy=LocalContainersStartupStrategy -Xms1024m -Xmx3072m -XX:MaxPermSize=3072m
+
+
+http://172.31.182.106:7016/kie-server/services/rest/server 
+
+server-user
+P@ssw0rd
+
+
+run as script from wrapper.sql
+@@E:\Ramesh\WFI\WorkFlowServices_Installer\1.1.0.0\dbscripts\wrapper.sql
+
+http://172.31.182.106:7017/wfi/wi
+
+UAM - DEV
+http://172.31.182.106:7015/maybank-admin
+
+INSERT INTO APPLICATION_MASTER TABLE.
+
+Insert into APPLICATION_MASTER (V_APPLICATION_CODE,V_APPLICATION_NAME,V_APPLICATION_DESC,N_SESSION_TIMEOUT,V_CONTEXT_ROOT,N_APPLICATION_MASTER_ID,D_ACTIVE_SINCE,V_ICON_PATH,V_ACTIVE_VERSION,V_BACKGROUND_PATH) values
+('TIB','PESTOS','Pestos RHP Workflow',999,'TIB',105,null,null,null,null);
+
+from inbox to pestos application
+http://172.31.20.85:7003/rhp-ui?applNo=RHP20200001243&pid=344&tid=469
+
+
+Register applicationproces
+http://172.31.182.106:7016/kie-server/docs/
+
+
+http://172.31.182.106:7017/wfi/swagger-ui.html
+
+http://172.31.182.106:7017/TaskInboxUI
+
+
+tar -xf archive.tar.gz
+export PATH=/app/apache-maven-3.6.3/bin:$PATH
+
+SELECT * FROM UAM_MENUS WHERE MENU_ID='TaskInboxUI_Menu'
+Insert into UAM_MENUS (MENU_PK,MENU_ID,MODULE_ID,PARENT_MENU_ID,DISPLAY_LEVEL,DISPLAY_ORDER,MENU_URL,MENU_URL_TYPE,ICON,IS_ACTIVE,AM_ENABLED,MENU_CODE,ACCESS_LEVEL_TYPE,CREATED_BY,CREATED_AT,UPDATED_BY,UPDATED_AT,VERSION) values (21,'TaskInboxUI_Menu','TaskInboxUI',null,0,1,null,null,'id-card',1,1,'label.menu.TaskInboxUI','SWITCH','ELKTS',to_timestamp('21-OCT-20 09.26.38.013000000 AM','DD-MON-RR HH.MI.SSXFF AM'),'ELKTS',to_timestamp('21-OCT-20 09.26.38.013000000 AM','DD-MON-RR HH.MI.SSXFF AM'),0);
+
+
+UAM_MENUS
+select * from uam_app_modules;
+
+
+-----insert below records---
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Zone_Mgr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Zone_Mgr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Mgr_Cre_Appr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Mgr_Cre_Appr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Hub_Mgr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Hub_Mgr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Cre_Appr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Cre_Appr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Cons_Fin','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Cons_Fin','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Auto_Fin','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Head_Auto_Fin','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Buss_Mgr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Buss_Mgr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_AFC_Mgr','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_AFC_Mgr','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_ACM','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_ACM','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_PO','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_PO','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_CS','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_CS','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_ME','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_ME','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_USERADMIN','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_USERADMIN','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_SUPERADMIN','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_SUPERADMIN','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Fraud_Officer','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Fraud_Reviewer','TaskInboxUI','MENU','TaskInboxUI_Menu',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Fraud_Officer','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+Insert into UAM_UG_PERMISSIONS (PERMISSION_PK,USER_GROUP_ID,MODULE_ID,COMPONENT_TYPE,COMPONENT_ID,ACCESS_XREF_RANK,IS_ACTIVE,CREATED_BY,CREATED_AT,UPDATED_BY) values (UAM_UG_PERMISSIONS_SEQ.nextval,'RHP_Fraud_Reviewer','TaskInboxUI','MODULE','TaskInboxUI',888,1,'SYSTEM',CURRENT_TIMESTAMP,'SYSTEM');
+
+config table
+http://172.31.182.106:7015/maybank-admin/api/ana/authenticate
+dev
+http://172.31.101.114:8060/authorization/v1/userSearch
+tHGQLYIwdiYfxmlA2XfwQw==
+ldap://172.31.92.5:389
+DC=MAYBANK-MY,DC=MBB,DC=DIR
+srv_odc
+tHGQLYIwdiYfxmlA2XfwQw==
+ldap://172.31.92.28:389
+DC=GLOBAL,DC=MBB,DC=DIR
+srv_odc
+http://172.31.101.114:8060/authorization/v1/authenticate
+0
+5
+10
+http://172.31.182.106:7016/kie-server/services/rest
+logcleanerkey
+1d
+M
+172.31.178.20
+25
+server-user
+P@ssw0rd
+E
+http://172.31.182.106:7017/wfi/v1/
+https://172.31.182.106:7015/maybank-admin/api/ana/authenticate
+https://172.31.182.106:7015/maybank-admin/api/fetchAppMenus/
+https://172.31.182.106:7015/maybank-admin/api/logout
+https://172.31.182.106:7015/maybank-admin/api/ana/authorise
+https://172.31.182.106:7015/maybank-admin/api/getGroupEmail/{branchCode}/{userGroup}
+http://172.31.101.121:7113/Notification/v1/sendMailByTaskId
+120
+
+
+
+-------------
+dev rhp - console
+https://172.31.182.106:7002/console/login/LoginForm.jsp
+
+
+
+
+
+
+Development:
+IP : 172.31.182.106
+OS is id and password => app_adm / rhp@123
+Weblogic id and password => appadmin / P@ssw0rd
+Weblogic Console :  https://172.31.182.106:7002/console
+
+WINSCP DEV PASSWORD
+root
+QAZpl,_098
+
+SIT:
+IP : 172.31.182.109
+OS is id and password => app_adm / rhp@123
+Weblogic id and password => appadmin / P@ssw0rd
+Weblogic Console :  https://172.31.182.109:7002/console
+
+OS is id and password => oracle / P@ssw0rd
+
+hostnameIP addressDB Instanceusername/passwordlisterner porttablespacesMBBRHPDEVDB00110.170.119.118RHPDEVDBrhpdev/rhpdev1521rhp_data
+rhp_indxMBBRHPDEVDB001 10.170.119.118 RHPDEVDB uamdev/uamdev 1521 elkts_data
+elkts_indxMBBRHPDEVDB001 10.170.119.118 RHPDEVDB wfidev/wfidev 1521 pestos_data
+rhp_pestos dev_indxMBBRHPDEVDB001 10.170.119.118 RHPDEVDB rhpdev/rhpdev 1521 pestos_data 
+pestos_indxMBBRHPSITDB001 10.170.119.119 RHPSITDB rhpsit/rhpsit 1521 rhp_data
+rhp_indxMBBRHPSITDB001 10.170.119.119 RHPSITDB uamsit/uamsit 1521 elkts_data
+elkts_indxMBBRHPSITDB001 10.170.119.119 RHPSITDB wfisit/wfisit 1521 pestos_data
+pestos_indx
+
+
+
+TaskInboxUI
+username - 00124302
+password - Maybank1234
+
+
+check services - cd /home/app_adm/rhp-app
+putty: 
+Queries
+-------------------------
+
+
+
+FDS ACTION LOGS - select * from rhp_ext_audit_logs where txn_code='FDSREQ02' order by res_dt desc;
+
+
+-- task and tabs config
+  select * from rhp_task_tab_config;
+   select * from rhp_appl_task;
+   
+   -- business rules
+   select * from rhp_business_rules_setup;
+   
+   select * from rhp_ind_det;
+   
+   
+   -- branches
+   select * from rhp_branches;
+   --state
+   select * from rhp_common_reference where ref_type='STATE';
+
+
+-- taskInbox to rhp application url config
+select * from human_node_defn where F_ACTIVE_STATUS='A';
+SELECT * FROM task_request_params;
+
+
+applicationServiceImpl.java - saveApplFromLead - conversion lead to appl no
+
+
+/applicationFromLead
+
+call rhp_core from rhp_int component - CoreClient.java
+
+
+
+
+Register applicationproces
+http://172.31.182.106:7016/kie-server/docs/
+
+http://172.31.182.106:7017/wfi/swagger-ui.html
+
+http://172.31.182.106:7017/TaskInboxUI
+
+tar -xf archive.tar.gz
+export PATH=/app/apache-maven-3.6.3/bin:$PATH
+
+SELECT * FROM UAM_MENUS WHERE MENU_ID='TaskInboxUI_Menu'
+Insert into UAM_MENUS (MENU_PK,MENU_ID,MODULE_ID,PARENT_MENU_ID,DISPLAY_LEVEL,DISPLAY_ORDER,MENU_URL,MENU_URL_TYPE,ICON,IS_ACTIVE,AM_ENABLED,MENU_CODE,ACCESS_LEVEL_TYPE,CREATED_BY,CREATED_AT,UPDATED_BY,UPDATED_AT,VERSION) values (21,'TaskInboxUI_Menu','TaskInboxUI',null,0,1,null,null,'id-card',1,1,'label.menu.TaskInboxUI','SWITCH','ELKTS',to_timestamp('21-OCT-20 09.26.38.013000000 AM','DD-MON-RR HH.MI.SSXFF AM'),'ELKTS',to_timestamp('21-OCT-20 09.26.38.013000000 AM','DD-MON-RR HH.MI.SSXFF AM'),0);
+
+UAM_MENUS
+select * from uam_app_modules;
+
+
+
+---- application task
+
+select * from rhp_appl_task where appl_no='RHP20210000016';
+select * from rhp_task_tab_config;
+select * from rhp_appl_status where appl_no='RHP20200006197';
+select * from rhp_appl_party_status;
+select * from rhp_task_notif_template;
+-- get active task name by appl_no
+SELECT * FROM RHP_APPL_TASK where appl_no='RHP20200016706';
+update RHP_APPL_TASK set active_task_name='ACM_APPROVAL' WHERE appl_no='RHP20200016706';
+COMMIT;
+-- groupd id and roles by taskname and checklist type
+select * from check_type_task_group_cfg;
+
+delete from cheq_tran_log where v_origination_id='RHP20200016706';
+
+-- APPROVAL DECESSION
+select * from rhp_appr_decision_config;
+select count(*) from rhp_application where auto_approval_flag in ('FAST TRACK APPROVAL', 'AUTO APPROVAL') 
+and auto_approval_run = 1 and appl_no = 'RHP20200016706';
+select * from rhp_application WHERE appl_no = 'RHP20200016706';
+UPDATE rhp_application SET AUTO_APPROVAL_FLAG='AUTO APPROVAL', auto_approval_run='1' WHERE appl_no = 'RHP20200016706';
+
+-- user groups in uam_user_usergroups - RHP
+SELECT * FROM rhp_user_assignment_setup WHERE USER_ID='12350003';
+UPDATE rhp_user_assignment_setup set group_code='RHP_ACM' WHERE USER_ID='12350003';
+COMMIT;
+
+-- UAM - uam_user_usergroups
+select * from uam_user_usergroups where user_login='12350003';
+UPDATE uam_user_usergroups SET user_group_id='RHP_PO' WHERE module_id='RHP' AND user_login='12350003';
+
+select * from uam_user_usergroups_seq;
+insert into uam_user_usergroups (user_usergroup_pk,user_login,module_id,user_group_id) values
+(UAM_USER_USERGROUPS_SEQ.nextval,'12350003','RHP','RHP_ACM');
+
+
+
+
+
+Pestos- NEW DEV-
+----------------------------
+https://172.31.99.144/services/rhpcore/api/leadConnectedParties/38328/I
+https://172.31.99.144/rhp-ui/ - ui url
+username - 12350003 / Maybank1234
+
+database -
+username/ pasword  - rhpdev/rhpdev
+ipaddress - 10.170.119.118
+PORT - 1521
+SID - RHPDEVDB
+winscp - 172.31.182.106
+OS is id and password => app_adm / rhp@123
+Weblogic id and password => appadmin / P@ssw0rd
+Weblogic Console :  https://172.31.182.106:7002/console
+TASKUI - http://172.31.182.106:7017/TaskInboxUI
+assigning new work flow : http://172.31.182.106:7017/TaskInboxUI/applicationlist
+
+kieserver- http://172.31.182.106:7016/kie-server/services/rest/server
+username - server-user / P@ssw0rd
+
+swaggar -ui = http://172.31.182.106:7017/wfi/swagger-ui.html#/
+
+WFI Database - 10.170.119.118
+username - wfidev / wfidev
+port 1521
+sid- RHPDEVDB
+
+WINSCP DEV PASSWORD
+root
+QAZpl,_098
+
+Services logs - /opt/rhp-app/LOG_DIR/PESTOS
+
+wfi - server path-  /root/.m2/repository/com/maybank/pestos/PESTOS_AUTO/1.1.18
+wfi -logs - /home/wladmin/WFI/logs
+------------------------------------------------
+
+
+PESTOS -wfi-  INSTALLATION
+---------------------
+server path-  /root/.m2/repository/com/maybank/pestos/PESTOS_AUTO/1.1.18
+logs - /home/wladmin/WFI/logs
+
+Configaration tables
+------------------
+database - wfidev
+select *  FROM PROCESS_DEFN WHERE v_process_defn_name in ('ApplicationProcess_v18');
+select * from HUMAN_NODE_ACCESS_GROUP_MAP;
+select * from HUMAN_NODE_DEFN;
+select * from config;
+select * from UAM_UG_PERMISSIONS
+database - rhpdev -144
+SELECT * FROM CONFIG;
+APPLICATION_MASTER
+UAM_MENUS 
+select * from uam_app_modules;
+
+run as script from wrapper.sql
+@@E:\Ramesh\WFI\WorkFlowServices_Installer\1.1.0.0\dbscripts\wrapper.sql
+
+
+after workflow api call check the below tables.
+select * from rhp_appl_task where appl_no='RHP20210000016';
+
+
+-----------------------
+ccris config data base
+-----------------
+select * from rhp_app_integration
+
+
+
+NEW URL FROM INBOX FOR rhp-ui
+/rhp-ui/workflowint/:applNo
+
+

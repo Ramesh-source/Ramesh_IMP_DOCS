@@ -1,0 +1,144 @@
+
+----------------------------------------------------------------------------------------------------------------
+                                                    Actuators
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-> We are developing applications using Spring Boot and We are deploying our applications in servers
+-> Once application is deployed, several users will access our applications
+-> When our application is running in production, it is very important to monitor our application
+
+-> Actuators are used to provide production ready features of our application.
+-> Using Actuators we can monitor and manage our applications
+-> Actuator endpoints are available to get information about application
+
+
+Working with Actuators
+----------------------
+-> We need to add spring-boot-starter-actuator dependency in pom.xml file
+-> Actuators provided several pre-defined endpoints to monitor our application. They are 
+
+1) health
+2) info
+3) beans
+4) mappings
+5) configProps
+6) httpTrace
+7) heapdump
+8) threaddump
+9) shutdown ( It is special endpoint )
+10) metrics 
+11) loggers
+
+
+http://localhost:9090/actuator/metrics
+
+How to enable information about our project ?
+
+info:
+	app : 
+		name : Boot-Actuator App
+		description : This is to learn actuators applicatoin
+		version : 1.0
+		developer : Bhaskar 
+		email : 
+
+
+
+mvn dependency:tree
+
+-> To access actuator endpoints we should use /actuator as prefix
+	Ex : http://localhost:9090/actuator/health
+
+-> By default health & info endpoints are exposed.
+-> heapdump endpoint is used to down jvm heap details. To analyze heap dump files we can use MAT (Memory analyzer tool).
+-> threaddump endpoint provides information about threads available in our application.
+-> Shutdown endpoint is a special endpoint. It is used to stop the application.
+-> This shutdown endpoint by deafult in disable state.
+-> shutdown endpoint is binded to HTTP POST Request.
+
+
+-> In Spring Boot 1.x v '/actuator' should not be there in URL
+-> In Spring Boot 2.x v '/actuator' is mandatory in  URL to access Actuator endpoints
+-> When we add 'actuator' starter, by default it will expose 2 endpoints they are 'health' and 'info' (we can access them directly).
+-> To expose all the endpoints we should write below property
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+        exclude: beans
+  endpoint:
+	shutdown:
+		enabled:true
+
+
+Spring Boot Admin Server & Admin Client
+---------------------------------------
+-> In Microservices Architecture based project, we will have several services (REST APIs)
+-> To monitor Rest APIs, we will enable and expose actuator endpoints
+-> If we have more no.of services, it will would be very difficult to 
+monitor and manage all our services available in project.
+
+********** To overcome this problem, Spring Boot Provided Admin Server & Admin Client Concept **
+
+-> If we use Admin Server, it will provide beautiful user interface to monitor and manage our REST APIs.
+Note:  Our Rest apis should be registered with Admin server then our rest api is called as Spring Boot Admin Client.
+
+------------------------------------------------------------------------------------------------------------------------------
+Today's session : Example on Admin Server & Client
+------------------------------------------------------------------------------------------------------------------------------
+
+-> Spring Boot Admin server is used monitor and manage our client applications (rest apis)
+-> By using Admin server at one place we can monitor and manage all our services
+
+Steps to Create Admin Server Application
+---------------------------------------
+-> Create Spring Boot Application with below dependencies
+
+	1)spring-boot-starter-web
+	2)spring-boot-starter-admin-server
+
+-> Configure @EnableAdminServer in Spring Boot Start class
+-> Configure embedded container port number in application.yml file
+-> Run application and access dashboard
+
+Note: By default Admin server will provide UI for monitoring and managing registered clients.
+
+Steps to develop Admin Server Client Application
+------------------------------------------------
+-> Create Spring Boot Application with below dependencies
+
+	1)spring-boot-starter-web
+	2)spring-boot-starter-admin-client
+	3)spring-boot-starter-actuator
+
+-> Configure below properties in application.yml file
+
+       1)port number
+       2)application name
+       3)register with admin server
+       4)expose actuator endpoints
+
+-> Create Rest Controller with Required Methods
+-> Run the application and verify Admin Server Dashboard
+
+Note: Client application should be displayed in Admin Server Dashboard.
+
+Admin Client 
+
+server:
+  port: 1111
+spring:
+  application:
+    name: CLIENT-ONE
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

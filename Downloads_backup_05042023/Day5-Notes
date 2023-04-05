@@ -1,0 +1,141 @@
+Load Balancer & LB Algos
+--------------------------
+When all components are in same application, all requests comes to same server then burden will increase on server.
+When burden increased on server, it will process requests slowly sometimes server might get crash also.
+To reduce burden on the server, people will use Load Balancers for applications.
+ Our application will be deployed to multiple servers and all those servers will be connected to Load balancer.
+Without a load balancing program, a million users would make million API requests. If a single server were to respond to all of these requests in real time it’d crash!
+
+Load Balancing is used to reduce burden on the server
+Load Balancing can be implemented in 2 ways
+		Client Side Load Balancing
+		Server Side Load Balancing
+
+Client Side Load Balancing 
+----------------------------
+When application is running in multiple servers, at client side we will decide to which server we have to make the request.
+ Ex : Feign Client with Ribbon Client 
+In Client side load balancing client will understand in how many servers the application is running.
+Feign Client internally uses Ribbon Client to achieve client side load balancing. 
+
+Server Side Load balancing
+----------------------------
+When our applications is running in Multiple Servers then all those servers will be connected to one LBR machine
+ When client send a request it will be received by LBR 
+LBR will be configured with algorithms which help the LBR to identify particular server to process the request.
+ 1) Round Robbin 
+2) Sticky Session
+ 3) IP Hashing
+Client will not know in how many servers application is running.
+
+
+How Load Balancer will distribute the load?
+--------------------------------------------
+LBR will use alogorithm to distribute incoming to requests to servers.
+1) Round Robbin
+2) Sticky Session
+3) IP Hashing etc....
+
+LoadBalancerImage.png
+
+ 1) Round Robbin  
+ Every request will process to one server ( REST APIS)
+ 2) Sticky Session 
+ If user logging in, request go to first server then all remaining request will go to same server then it will use Sticky session Algorithm.
+Facebook
+ 3) IP Hashing 
+ If client send a request to LBR, in LBR it will calculate server number based on IP address  formula(ip) , 
+
+
+------------------------------------------------------------------------------------------------------------------------
+                                                Spring Config Server & Config Client
+------------------------------------------------------------------------------------------------------------------------
+
+
+-> Spring Cloud Provided Config Server
+-> Config Server is used to Externalize Configuration Properties from our application.
+
+Scenario:> Microservice ----> Config-Server ----> Git Repo
+
+Steps to work with Config Server Project
+----------------------------------------
+1) Create Spring Boot application with below dependencies
+
+	a) spring-boot-starter-web
+	b) spring-cloud-config-server
+
+2) Configure @EnableConfigServer annotation at Spring Boot Start class
+
+3) Create GIT repository and create config-properties files in repository then configure properties in the form of key and vale format.
+
+4) Configure below properties in application.properties or application.yml file
+
+
+server:
+  port: 8888
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  level:
+    '[org.springframework.cloud.config.server]': debug
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/javaexpresschannel/configserver
+          search-paths: 
+           - 'stock-service'
+
+Steps to develop Config Server Client
+-------------------------------------
+1) Create Spring Boot application with below dependencies
+
+	a)spring-boot-starter-web
+	2)spring-cloud-starter-config
+
+
+2) Configure below properties in application.properties or application.yml file
+
+application.yml
+---------------
+spring:
+  application:
+    name: stock
+
+bootstrap.yml
+-------------
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8888
+      profile: dev 			
+
+https://github.com/javaexpresschannel/configserver
+
+create folder - stock-service in git repo
+----------------------------------------
+server:
+  port: 8020
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: India@123
+    url: jdbc:mysql://localhost:3306/stock-dev
+    username: root
+    initialization-mode: always
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+3) Inject properties values into variables wherever it is required
+
+      @Value("${msg}")
+Ex:   String msg;
