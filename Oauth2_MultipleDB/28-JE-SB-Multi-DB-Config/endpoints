@@ -1,0 +1,3 @@
+http://localhost:9092/addData
+http://localhost:9092/getUsers
+http://localhost:9092/getUsers
